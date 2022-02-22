@@ -8,7 +8,7 @@ metaDat <- read_excel("X:/2105 Pike reproductive success/2105samples.xlsx",
   rename(sample = SampleID)
 
 ### Read in genotypes, merge with metadata, organize by pop, remove negative controls
-dat <- read_table("X:/2105 Pike reproductive success/MEGAsat_outputs/Output_2105-123_cov10x_paired_out/Genotype.txt") %>%
+dat1 <- read_table("X:/2101 Pike_Musky Microsatellite Panel/NOP/2105-123_output/Output_2105-123_paired_out/Genotype.txt") %>%
   select(-ncol(.)) %>%
   separate(Sample_idx1_idx2,
            into = c("sample", NA, NA, NA),
@@ -16,6 +16,17 @@ dat <- read_table("X:/2105 Pike reproductive success/MEGAsat_outputs/Output_2105
   left_join(metaDat) %>%
   arrange(WaterbodyName, sample) %>%
   filter(!grepl('NTC-', sample))
+
+dat <- read_table("X:/2101 Pike_Musky Microsatellite Panel/NOP/2105-250_output/Output_2105-250_paired_out/Genotype.txt") %>%
+  select(-ncol(.)) %>%
+  separate(Sample_idx1_idx2,
+           into = c("sample", NA, NA, NA),
+           sep = "\\.") %>%
+  left_join(metaDat) %>%
+  arrange(WaterbodyName, sample) %>%
+  filter(!grepl('NTC-', sample)) %>%
+  bind_rows(dat1) %>%
+  arrange(WaterbodyName)
 
 ## Names for each allele of each locus
 loci <- colnames(dat) %>%
@@ -100,7 +111,7 @@ mat = insertRow(mat, 2, c(loc_names, rep("", ncol(mat)-1 )))
 mat = insertRow(mat, 3, popline)
 
 # Export file
-write.table(mat, file= "X:/2105 Pike reproductive success/MEGAsat_outputs/Output_2105-123_cov10x_paired_out/genotypes.gen",
+write.table(mat, file= "X:/2101 Pike_Musky Microsatellite Panel/NOP/genotypes150_250.gen",
             quote=FALSE,
             col.names=F,
             row.names=F)
