@@ -15,7 +15,7 @@ mcglPCA = function(dat) {
     scannf = FALSE
   )
 
-  popNames <- dat2@pop %>%
+  popNames <- dat@pop %>%
     as_tibble() %>%
     rename(pop = value)
 
@@ -34,7 +34,7 @@ mcglPCA = function(dat) {
          aes(x = Axis1,
              y = Axis2,
              color = pop)) +
-    geom_point(alpha = 0.8) +
+    geom_point(alpha = 0.4) +
     stat_ellipse() +
     geom_point(data = centroids,
                size = 6,
