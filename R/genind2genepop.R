@@ -25,7 +25,7 @@
 # genind2genepop(gen, file="example_genepop.gen")
 
 
-genind2genepop = function(data, file=""){
+genind2genepop = function(data, ncode, file=""){
 
   ## Check input file a genind object
   if(!"genind" %in% class(data)){
@@ -54,7 +54,9 @@ genind2genepop = function(data, file=""){
   mat = apply(mat, FUN=gsub, MARGIN=2, pattern="T", replacement="04")
 
   ## Convert NAs to 0000
-  mat[is.na(mat)] = "000000"
+  mat[is.na(mat)] = ifelse(ncode == 2,
+                           "0000",
+                           "000000")
 
   ## Add a column containing individual names with a comma afterwards
   ind = paste(indNames(data),",", sep="")
